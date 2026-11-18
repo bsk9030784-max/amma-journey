@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#111111" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon-192.png" />
+    <title>Amma's Journey</title>
+    <style>
+      /* 1rem = 1% of the game's height (set by the code), so everything scales with the screen */
+      html, body {
+        margin: 0; width: 100%; height: 100%; overflow: hidden;
+        background: #000; color: white; font-family: sans-serif;
+        touch-action: none; user-select: none; -webkit-user-select: none;
+      }
+      body { display: flex; align-items: center; justify-content: center; }
+      #stage {
+        position: relative; overflow: hidden; background: #111;
+        width: min(100vw, 177.78vh); height: min(56.25vw, 100vh);
+      }
+      #game { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+      #preview {
+        position: absolute; left: 2rem; bottom: 2rem; width: 26rem; height: 19.5rem;
+        border: 0.8rem solid #cc2244; border-radius: 1rem; overflow: hidden; transform: scaleX(-1);
+      }
+      #preview video, #preview canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+
+      #screen {
+        position: absolute; inset: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 2rem; text-align: center;
+        background: rgba(0, 0, 0, 0.55);
+      }
+      #screen.hidden { display: none; }
+      #screen h1 { font-size: 8rem; margin: 0; }
+      #screen p { font-size: 4.2rem; margin: 0; max-width: 90%; }
+      .row { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; }
+      .garden { font-size: 7rem; line-height: 1.1; }
+      .dots { font-size: 3rem; letter-spacing: 0.8rem; color: #ffd23f; }
+
+      .btn {
+        font-size: 6rem; padding: 2rem 5rem; border: 0.5rem solid #fff; border-radius: 3rem;
+        color: #111; font-weight: bold; cursor: pointer;
+        background: linear-gradient(90deg, #ffd23f var(--fill, 0%), #ffffff var(--fill, 0%));
+      }
+      .btn.small { font-size: 4rem; padding: 1.2rem 3rem; }
+      .btn.dest { font-size: 5rem; padding: 2rem 4rem; }
+
+      #cursor {
+        position: absolute; width: 9rem; height: 9rem; margin: -4.5rem 0 0 -4.5rem;
+        border-radius: 50%; border: 0.8rem solid #00e5ff; background: rgba(0, 229, 255, 0.25);
+        pointer-events: none; display: none; z-index: 5;
+      }
+      #hint {
+        position: absolute; left: 0; right: 0; bottom: 2rem; text-align: center;
+        font-size: 3.6rem; color: #ddd; pointer-events: none; display: none;
+      }
+      #status { position: absolute; right: 1rem; bottom: 0.5rem; margin: 0; font-size: 2.4rem; color: #aaa; }
+
+      @keyframes bloom {
+        0% { transform: scale(0.2) rotate(-20deg); opacity: 0; }
+        60% { transform: scale(1.5) rotate(8deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0); }
+      }
+      .bloom { display: inline-block; animation: bloom 1.6s ease-out; }
+
+      #rotate {
+        display: none; position: fixed; inset: 0; z-index: 10; background: #111;
+        flex-direction: column; align-items: center; justify-content: center;
+        font-size: 7vw; text-align: center; gap: 2vw;
+      }
+      @media (orientation: portrait) { #rotate { display: flex; } }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <canvas id="game"></canvas>
+      <div id="preview">
+        <video id="video" width="640" height="480" autoplay playsinline muted></video>
+        <canvas id="skel" width="640" height="480"></canvas>
+      </div>
+      <div id="screen"></div>
+      <div id="cursor"></div>
+      <p id="hint"></p>
+      <p id="status"></p>
+    </div>
+    <div id="rotate"><div style="font-size: 14vw;">🔄</div>Please turn your phone sideways</div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
